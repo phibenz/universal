@@ -3,6 +3,8 @@ import numpy as np
 from tensorflow.python.platform import gfile
 import os.path
 from prepare_imagenet_data import preprocess_image_batch, create_imagenet_npy, undo_image_avg
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import sys, getopt
 import zipfile
@@ -36,9 +38,10 @@ if __name__ == '__main__':
     argv = sys.argv[1:]
 
     # Default values
-    path_train_imagenet = '/datasets2/ILSVRC2012/train'
+    # path_train_imagenet = '/datasets2/ILSVRC2012/train'
+    path_train_imagenet = '/home/user/Data/ImageNet/train'
     path_test_image = 'data/test_img.png'
-    
+
     try:
         opts, args = getopt.getopt(argv,"i:t:",["test_image=","training_path="])
     except getopt.GetoptError:
@@ -138,7 +141,7 @@ if __name__ == '__main__':
         str_label_perturbed = labels[np.int(label_perturbed)-1].split(',')[0]
 
         # Show original and perturbed image
-        plt.figure()
+        fig = plt.figure()
         plt.subplot(1, 2, 1)
         plt.imshow(undo_image_avg(image_original[0, :, :, :]).astype(dtype='uint8'), interpolation=None)
         plt.title(str_label_original)
@@ -147,4 +150,5 @@ if __name__ == '__main__':
         plt.imshow(undo_image_avg(image_perturbed[0, :, :, :]).astype(dtype='uint8'), interpolation=None)
         plt.title(str_label_perturbed)
 
+        fig.savefig("./test.png")
         plt.show()

@@ -1,6 +1,8 @@
 import numpy as np
 import os
-from scipy.misc import imread, imresize
+# from scipy.misc import imread, imresize # Deprecated
+from imageio import imread
+from PIL import Image
 
 CLASS_INDEX = None
 CLASS_INDEX_PATH = 'https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json'
@@ -10,9 +12,11 @@ def preprocess_image_batch(image_paths, img_size=None, crop_size=None, color_mod
     img_list = []
 
     for im_path in image_paths:
-        img = imread(im_path, mode='RGB')
+        # img = imread(im_path, mode='RGB') # Deprecated
+        img = imread(im_path, as_gray=False, pilmode="RGB")
         if img_size:
-            img = imresize(img,img_size)
+            # img = imresize(img,img_size) # Deprecated
+            img = np.array(Image.fromarray(img).resize(img_size))
 
         img = img.astype('float32')
         # We normalize the colors (in RGB space) with the empirical means on the training set
