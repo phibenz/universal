@@ -1,4 +1,11 @@
 __pycache__/
 
+python/data/imagenet_test_data.npy
+python/data/imagenet_train_data.npy
+
 python/data/inception*
 python/data/tensorflow*
+
+python/test.png
+python/plot_class_count.ipynb
+python/.ipynb_checkpoints

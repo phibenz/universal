@@ -83,9 +83,10 @@ if __name__ == '__main__':
         print('>> Computing feedforward function...')
         def f(image_inp): return persisted_sess.run(persisted_output, feed_dict={persisted_input: np.reshape(image_inp, (-1, 224, 224, 3))})
 
-        file_perturbation = os.path.join('data', 'universal.npy')
+        file_perturbation = os.path.join('data', 'universal_inception.npy')
 
-        if os.path.isfile(file_perturbation) == 0:
+        # if os.path.isfile(file_perturbation) == 0:
+        if True:
 
             # TODO: Optimize this construction part!
             print('>> Compiling the gradient tensorflow functions. This might take some time...')
@@ -97,7 +98,7 @@ if __name__ == '__main__':
             def grad_fs(image_inp, indices): return persisted_sess.run(dydx, feed_dict={persisted_input: image_inp, inds: indices}).squeeze(axis=1)
 
             # Load/Create data
-            datafile = os.path.join('data', 'imagenet_data.npy')
+            datafile = os.path.join('data', 'imagenet_train_data.npy')
             if os.path.isfile(datafile) == 0:
                 print('>> Creating pre-processed imagenet data...')
                 X = create_imagenet_npy(path_train_imagenet)
@@ -108,10 +109,10 @@ if __name__ == '__main__':
 
                 # Save the pre-processed images
                 # Caution: This can take take a lot of space. Comment this part to discard saving.
-                np.save(os.path.join('data', 'imagenet_data.npy'), X)
+                np.save(os.path.join('data', 'imagenet_train_data.npy'), X)
 
             else:
-                print('>> Pre-processed imagenet data detected')
+                print('>> Pre-processed imagenet test data detected')
                 X = np.load(datafile)
 
             # Running universal perturbation
